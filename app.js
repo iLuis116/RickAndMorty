@@ -44,12 +44,16 @@ const showCharacters = (personajes) => {
 
 const creaCard = (personaje) => {
   const html = `
-  <div class="card" style="width: 18rem;">
+  <div class="card bg-dark text-light border" style="width: 18rem;">
   <img src="${personaje.image}" class="card-img-top" alt="${personaje.image}">
   <div class="card-body">
     <h5 class="card-title">${personaje.name}</h5>
     <p class="card-text">${personaje.status}</p>
-    <a href="#" class="btn btn-primary">Ver más</a>
+    <a href="#" 
+    class="btn btn-primary"
+    data-bs-toggle="modal"
+    data-bs-target="#exampleModal"
+    data-id="${personaje.id}">Ver más</p>
   </div>
 </div>
 `;
@@ -64,6 +68,14 @@ const navegacion = (e)  => {
   }
 }
 
+const loadInfo = (e) =>{
+  e.preventDefault();
+  if(e.target.classList.contains('btn')){
+    console.log('Hi!');
+  }
+}
+
 document.querySelector('#botones').addEventListener('click', navegacion);
+document.querySelector('#characters').addEventListener('click', loadInfo);
 
 loadData(urlBase);
