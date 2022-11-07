@@ -60,12 +60,38 @@ const creaCard = (personaje) => {
 return html;
 }
 
+
 const navegacion = (e)  => {
   e.preventDefault();
   if(e.target.classList.contains('btn')){
     const id = e.target.getAttribute('data-id');
     loadData(urlBase, id);
   }
+}
+
+const modalBody = (personaje) => {
+  const div = document.createElement('div');
+  div.classList.add('text-center');
+  let html = ``;
+  html += `<img src="${personaje.image}">`;
+  html += `<p>${personaje.status} - ${personaje.species}</p>`;
+  html += `<p>Ultima ubicacion conocida </p><p>${personaje.origin.name}<p/>`;
+  html += `<p>Ha aparecido en ${personaje.episode.lenght} episodios</p>`;
+  div.innerHTML = html;
+  return div;
+}
+
+
+const showCharactersByid = (id) => {
+  const urlid = `${urlBase}${id}`;
+  fetch(urlid)
+      .then(result => result.json())
+      .then(character => {
+        const modalContent = document.querySelector('.modal-body')
+        document.querySelector('.modal-title').innerText = character.name;
+        console.log(character);
+        modalContent.appendChild(modalBody(character));
+      })
 }
 
 const loadInfo = (e) =>{
@@ -76,9 +102,10 @@ const loadInfo = (e) =>{
     modalContent.appendChild(spinner());
     setTimeout(() =>{
       modalContent.removeChild(modalContent.firstChild);
-      const content = document.createElement('div');
+    //const content = document.createElement('div');
       const id = e.target.getAttribute('data-id');
-      content.innerHTML = `<h2>id ${id}</h2>`;
+    //content.innerHTML = `<h2>id ${id}</h2>`;
+      const content = showCharactersByid(id);
       modalContent.appendChild(content);
     }, 3000);
   }
